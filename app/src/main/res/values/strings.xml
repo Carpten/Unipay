@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Unipay</string>
     <string name="action_settings">Settings</string>
+
+    <string name="login">登录</string>
+
+
+    <string name="accessibility_description">开启该服务，即可使用键盘唤起收银功能</string>
+
 </resources>

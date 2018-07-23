@@ -28,7 +28,6 @@ public class NetBuilder<T> {
 
     public <T> Disposable request(Flowable<T> flowable, final Consumer<T> consumer, final NetCallback... netCallbacks) {
         for (NetCallback netCallback : netCallbacks) {
-            netCallback.onRegister(mCompositeDisposable, flowable, consumer, netCallbacks);
             netCallback.onStart();
         }
         Disposable disposable = flowable
@@ -44,39 +43,6 @@ public class NetBuilder<T> {
                     @Override
                     public void accept(T t) throws Exception {
                         consumer.accept(t);
-                        for (NetCallback netCallback : netCallbacks) {
-                            netCallback.onRequestSuccess();
-                        }
-                    }
-                }, new ErrorConsumer(mContext, netCallbacks));
-
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.add(disposable);
-        }
-        return disposable;
-    }
-
-
-    public <T> Disposable request(final Flowable<T> flowable, final Consumer<T> consumer, final NetCallback newNetCallback, final NetCallback... netCallbacks) {
-        newNetCallback.onRegister(mCompositeDisposable, flowable, consumer, netCallbacks);
-        for (NetCallback netCallback : netCallbacks) {
-            netCallback.onRegister(mCompositeDisposable, flowable, consumer, netCallbacks);
-            netCallback.onStart();
-        }
-        Disposable disposable = flowable
-                .doFinally(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        for (NetCallback netCallback : netCallbacks) {
-                            netCallback.onComplete();
-                        }
-                    }
-                })
-                .subscribe(new Consumer<T>() {
-                    @Override
-                    public void accept(T t) throws Exception {
-                        consumer.accept(t);
-                        newNetCallback.onRegister(mCompositeDisposable, flowable, consumer, netCallbacks);
                         for (NetCallback netCallback : netCallbacks) {
                             netCallback.onRequestSuccess();
                         }

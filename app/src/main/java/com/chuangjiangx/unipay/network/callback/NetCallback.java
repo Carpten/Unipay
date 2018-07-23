@@ -16,7 +16,4 @@ public interface NetCallback extends ErrorNetCallback {
     void onRequestSuccess();
 
     void onComplete();
-
-    <T> void onRegister(CompositeDisposable compositeDisposable, Flowable<T> flowable
-            , Consumer<T> consumer, NetCallback... netCallbacks);
 }

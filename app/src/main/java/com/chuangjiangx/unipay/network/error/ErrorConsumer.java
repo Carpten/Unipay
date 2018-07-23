@@ -4,8 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.chuangjiangkeji.bcrm.bcrm_android.R;
-import com.chuangjiangkeji.bcrm.bcrm_android.login.LoginActivity;
+import com.chuangjiangx.unipay.login.LoginActivity;
 import com.chuangjiangx.unipay.network.callback.ErrorNetCallback;
 import com.google.gson.stream.MalformedJsonException;
 
@@ -17,7 +16,7 @@ import io.reactivex.functions.Consumer;
 
 /**
  * @author yangshuiqiang
- *         Time:2017/11/22 13:49
+ * Time:2017/11/22 13:49
  */
 
 public class ErrorConsumer implements Consumer<Throwable> {
@@ -33,10 +32,10 @@ public class ErrorConsumer implements Consumer<Throwable> {
     public void accept(Throwable throwable) throws Exception {
         if (throwable != null) {
             if (!TextUtils.isEmpty(throwable.getMessage()))
-                Log.e("errorconsumer", throwable.getMessage());
+                Log.e(ErrorConsumer.class.getSimpleName(), throwable.getMessage());
             if (throwable instanceof UnknownHostException || throwable instanceof ConnectException
                     || throwable instanceof SocketTimeoutException) {
-                HttpException httpException = new HttpException(HttpException.NET_ERROR_CODE, mContext.getString(R.string.wlljsb));
+                HttpException httpException = new HttpException(HttpException.NET_ERROR_CODE, "");
                 for (ErrorNetCallback errorNetCallback : mErrorNetCallbacks) {
                     errorNetCallback.onRequestFail(httpException);
                 }

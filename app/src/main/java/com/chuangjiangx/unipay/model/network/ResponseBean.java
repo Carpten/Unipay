@@ -7,7 +7,9 @@ package com.chuangjiangx.unipay.model.network;
 public class ResponseBean {
 
     private boolean success;
+    private String err_code;
     private String errCode;
+    private String err_msg;
     private String errMsg;
 
     public boolean isSuccess() {
@@ -19,7 +21,7 @@ public class ResponseBean {
     }
 
     public String getErrCode() {
-        return errCode;
+        return errCode == null ? err_code : errCode;
     }
 
     public void setErrCode(String errCode) {
@@ -27,7 +29,7 @@ public class ResponseBean {
     }
 
     public String getErrMsg() {
-        return errMsg;
+        return errMsg == null ? err_msg : errMsg;
     }
 
     public void setErrMsg(String errMsg) {

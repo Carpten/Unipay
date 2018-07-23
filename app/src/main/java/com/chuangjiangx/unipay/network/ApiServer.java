@@ -1,6 +1,15 @@
 package com.chuangjiangx.unipay.network;
 
 
+import com.chuangjiangx.unipay.model.network.CommonBean;
+
+import java.util.Map;
+
+import io.reactivex.Flowable;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
+
 /**
  * @author: yangshuiqiang
  * Time:2017/11/20 16:43
@@ -8,9 +17,9 @@ package com.chuangjiangx.unipay.network;
 
 interface ApiServer {
 
-//    @FormUrlEncoded
-//    @POST("/login")
-//    Flowable<CommonBean<LoginBean>> login(@FieldMap Map<String, Object> body);
+    @FormUrlEncoded
+    @POST("/main/app/login")
+    Flowable<CommonBean<String>> login(@FieldMap Map<String, Object> body);
 //
 //    @FormUrlEncoded
 //    @POST("/logout")

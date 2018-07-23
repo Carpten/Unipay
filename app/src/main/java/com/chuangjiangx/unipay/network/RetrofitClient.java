@@ -2,15 +2,20 @@ package com.chuangjiangx.unipay.network;
 
 import android.support.annotation.NonNull;
 
+import com.chuangjiangx.unipay.model.network.CommonBean;
 import com.chuangjiangx.unipay.model.network.ResponseBean;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Flowable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -177,23 +182,23 @@ public class RetrofitClient {
         RetrofitClient.get();
     }
 
-//    /**
-//     * 登录
-//     *
-//     * @param username 用户名
-//     * @param password 密码
-//     * @param cid      个推ID
-//     * @param uid      UID
-//     */
-//    public Flowable<LoginBean> login(String username, String password, String cid, String uid) {
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        hashMap.put("username", username);
-//        hashMap.put("password", password);
-//        hashMap.put("uid", uid);
-//        hashMap.put("cid", cid);
-//        return mApiServer.login(hashMap).subscribeOn(Schedulers.from(singleExecutorService))
-//                .map(new ModelHandler<LoginBean>());
-//    }
+    /**
+     * 登录
+     *
+     * @param username 用户名
+     * @param password 密码
+     */
+    public Flowable<String> login(String username, String password) {
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("username", username);
+        hashMap.put("password", password);
+        hashMap.put("macCode", UUID.randomUUID());
+        hashMap.put("cid", "16b7ab463db997d15a62527e8708f49e");
+        hashMap.put(" deviceType", "1");
+        return mApiServer.login(hashMap).subscribeOn(Schedulers.io())
+                .map(new ModelHandler<String>());
+    }
 //
 //
 //    public Flowable<UserInfo> getUserInfo() {

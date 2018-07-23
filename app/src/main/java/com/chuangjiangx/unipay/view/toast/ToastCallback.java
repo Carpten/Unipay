@@ -1,25 +1,22 @@
-package com.chuangjiangx.unipay.network.callback;
+package com.chuangjiangx.unipay.view.toast;
 
 
+import com.chuangjiangx.unipay.network.callback.NetCallback;
 import com.chuangjiangx.unipay.network.error.HttpException;
-
-import io.reactivex.Flowable;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * @author: yangshuiqiang
- * Time:2018/1/17
+ * Time:2018/1/12
  */
-public class SimpleNetCallback implements NetCallback {
+public class ToastCallback implements NetCallback {
+
     @Override
     public void onRequestFail(HttpException e) {
-
+        SingleToast.get().shortShow(e.getErrMsg());
     }
 
     @Override
     public void onStart() {
-
     }
 
     @Override
@@ -29,6 +26,5 @@ public class SimpleNetCallback implements NetCallback {
 
     @Override
     public void onComplete() {
-
     }
 }
