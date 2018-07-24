@@ -25,14 +25,13 @@
 
         <activity
             android:name=".login.LoginActivity"
-            android:label="@string/login"
             android:theme="@style/AppTheme.NoActionBar.White"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar.White"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <service
             android:name=".services.MonitorService"

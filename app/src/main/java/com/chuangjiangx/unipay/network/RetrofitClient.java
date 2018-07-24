@@ -2,14 +2,17 @@ package com.chuangjiangx.unipay.network;
 
 import android.support.annotation.NonNull;
 
+import com.chuangjiangx.unipay.config.Config;
+import com.chuangjiangx.unipay.model.login.MyinfoBean;
 import com.chuangjiangx.unipay.model.network.CommonBean;
 import com.chuangjiangx.unipay.model.network.ResponseBean;
+import com.chuangjiangx.unipay.preference.Preferences;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -58,12 +61,11 @@ public class RetrofitClient {
                     public Response intercept(@NonNull Chain chain) throws IOException {
                         Request original = chain.request();
                         Request request = original.newBuilder()
-//                                .header("token", Config.token == null ? "" : Config.token)
+                                .header("token", Config.sToken == null ? "" : Config.sToken)
                                 .build();
                         return chain.proceed(request);
                     }
                 })
-//                .addInterceptor(getlogging())//添加日志
                 .connectTimeout(TIME_OUT, TimeUnit.MILLISECONDS)//设置连接超时时间
                 .build();
 
@@ -75,41 +77,28 @@ public class RetrofitClient {
                 .build().create(ApiServer.class);
     }
 
-//    /**
-//     * 打印请求
-//     */
-//    private HttpLoggingInterceptor getlogging() {
-//        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-//            @Override
-//            public void log(String message) {
-//                Log.i("okhttp", message);
-//            }
-//        });
-//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        return interceptor;
-//    }
-
     /**
      * token拦截器，在token过期时会重新登录获取新token
      */
     private class TokenInterceptor implements Interceptor {
 
-        private Gson gson = new Gson();
+        private Gson mGson = new Gson();
 
         @Override
         public Response intercept(@NonNull Chain chain) throws IOException {
             Request request = chain.request();
             Response response = chain.proceed(request);
             if (isTokenExpired(response)) {
-//                String clientid = PushManager.getInstance().getClientid(MyApplication.getApp());
                 FormBody formBody = new FormBody.Builder()
-//                        .add("uid", Config.uid == null ? "" : Config.uid)
-//                        .add("cid", clientid == null ? "" : clientid)
-//                        .add("username", Config.username == null ? "" : Config.username)
-//                        .add("password", Config.password == null ? "" : Config.password)
+                        .add("username", Config.sUsername == null ? "" : Config.sUsername)
+                        .add("password", Config.sPassword == null ? "" : Config.sPassword)
+                        .add("macCode", "1")
+                        .add("cid", "1")
+                        .add("deviceType", "1")
+
                         .build();
                 Request tokenRequest = new Request.Builder()
-                        .url(InternetConfig.BASE_URL + "/login")
+                        .url(InternetConfig.BASE_URL + "/main/app/login")
                         .post(formBody)
                         .build();
                 OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
@@ -118,19 +107,21 @@ public class RetrofitClient {
                 ResponseBody tokenBody = okHttpClient.newCall(tokenRequest).execute().body();
                 if (tokenBody != null) {//这里tokenBody不会为空，为空会抛出异常
                     String str = tokenBody.string();
-//                    LoginBeanWrap loginBeanWrap = gson.fromJson(str, LoginBeanWrap.class);
-//                    if (loginBeanWrap.isSuccess()) {
-//                        Config.token = loginBeanWrap.getLoginBean().getToken();
-//                        MyinfoPreferences.edit()
-//                                .putString(MyinfoPreferences.KEY_TOKEN, Config.token)
-//                                .apply();
-//                        Request newRequest = chain.request()
-//                                .newBuilder()
-//                                .header("token", Config.token == null ? "" : Config.token)
-//                                .build();
-//                        //重新请求
-//                        return chain.proceed(newRequest);
-//                    }
+                    CommonBean<String> loginBeanWrap = mGson.fromJson(str
+                            , new TypeToken<CommonBean<String>>() {
+                            }.getType());
+                    if (loginBeanWrap.isSuccess()) {
+                        Config.sToken = loginBeanWrap.getData();
+                        Preferences.edit()
+                                .putString(Preferences.KEY_TOKEN, Config.sToken)
+                                .apply();
+                        Request newRequest = chain.request()
+                                .newBuilder()
+                                .header("token", Config.sToken == null ? "" : Config.sToken)
+                                .build();
+                        //重新请求
+                        return chain.proceed(newRequest);
+                    }
                 }
             }
             return response;
@@ -147,7 +138,7 @@ public class RetrofitClient {
                     source.request(Long.MAX_VALUE);
                     Buffer buffer = source.buffer();
                     String bodyString = buffer.clone().readString(UTF8);
-                    ResponseBean responseBean = gson.fromJson(bodyString, ResponseBean.class);
+                    ResponseBean responseBean = mGson.fromJson(bodyString, ResponseBean.class);
                     if ("000006".equals(responseBean.getErrCode())) {
                         return true;
                     }
@@ -189,81 +180,31 @@ public class RetrofitClient {
      * @param password 密码
      */
     public Flowable<String> login(String username, String password) {
-
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("username", username);
         hashMap.put("password", password);
-        hashMap.put("macCode", UUID.randomUUID());
-        hashMap.put("cid", "16b7ab463db997d15a62527e8708f49e");
+        hashMap.put("macCode", "1");
+        hashMap.put("cid", "1");
         hashMap.put(" deviceType", "1");
         return mApiServer.login(hashMap).subscribeOn(Schedulers.io())
                 .map(new ModelHandler<String>());
     }
-//
-//
-//    public Flowable<UserInfo> getUserInfo() {
-//        return mApiServer.getUserInfo().subscribeOn(Schedulers.io())
-//                .map(new ModelHandler<UserInfo>());
-//    }
-//
-//    /**
-//     * 获取用户权限信息
-//     */
-//    public Flowable<List<PermissionCode>> getUserAuthority() {
-//        return mApiServer.getComponentList().subscribeOn(Schedulers.io())
-//                .map(new ModelHandler<List<PermissionCode>>());
-//    }
-//
-//    public Flowable<List<CountInfo>> getCountInfo() {
-//        return mApiServer.getCountInfo().subscribeOn(Schedulers.io())
-//                .map(new ModelHandler<List<CountInfo>>());
-//    }
-//
-//    /**
-//     * 获取扩展应用列表，首页我的使用
-//     *
-//     * @return 拓展应用列表
-//     */
-//    public Flowable<ExtendApplicationBean> getExtendApplication() {
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        hashMap.put("page.pageNO", 1);
-//        hashMap.put("page.everyPageCount", 4);
-//        hashMap.put("page.totalCount", 4);
-//        return mApiServer.getExtendApplication(hashMap).subscribeOn(Schedulers.io())
-//                .map(new ModelHandler<ExtendApplicationBean>());
-//    }
-//
-//    /**
-//     * 获取扩展应用列表，扩展应用页使用
-//     *
-//     * @return 拓展应用列表
-//     */
-//    public Flowable<List<ExtendApplicationBean.OpenApplicationBean>> getExtendList() {
-//        return mApiServer.getExtendList().subscribeOn(Schedulers.io())
-//                .map(new ModelHandler<List<ExtendApplicationBean.OpenApplicationBean>>());
-//    }
-//
-//    /**
-//     * 获取扩展应用URL
-//     *
-//     * @param id 拓展应用列表中对应的id
-//     * @return 拓展应用具体URL
-//     */
-//    public Flowable<ExtendCodeBean> getApplicationCode(long id) {
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        hashMap.put("id", id);
-//        return mApiServer.getApplicationCode(hashMap).subscribeOn(Schedulers.io())
-//                .map(new ModelHandler<ExtendCodeBean>());
-//    }
-//
-//    /**
-//     * 退出登录
-//     */
-//    public Flowable<ResponseBean> logout(String token) {
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        hashMap.put("token", token);
-//        return mApiServer.logout(hashMap).subscribeOn(Schedulers.from(singleExecutorService));
-//    }
+
+
+    public Flowable<MyinfoBean> getUserInfo() {
+        return mApiServer.getUserInfo().subscribeOn(Schedulers.io())
+                .map(new ModelHandler<MyinfoBean>());
+    }
+
+
+    /**
+     * 退出登录
+     */
+    public Flowable<ResponseBean> logout(String token) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("token", token);
+        return mApiServer.logout(hashMap).subscribeOn(Schedulers.io());
+    }
 //
 //    /**
 //     * 检测更新
@@ -285,79 +226,5 @@ public class RetrofitClient {
 //            }
 //        }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.io());
 //    }
-//
-//    /**
-//     * 获取商户列表
-//     *
-//     * @param pageNum    当前页数
-//     * @param status     状态，0：未启用，1：待审核，2：已签约，3：过期，4：注销
-//     * @param searchName 搜索内容
-//     */
-//    public Flowable<MerchantList> getMerchantList(String roleCode, int pageNum, int status, String searchName) {
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        hashMap.put("pageNumber", pageNum);
-//        hashMap.put("pageSize", Page.EVERY_PAGE_COUNT);
-//        hashMap.put("status", status);
-//        hashMap.put("name", searchName);
-//        return mApiServer.getMerchantList(Role.getPathFromRole(roleCode), hashMap)
-//                .subscribeOn(Schedulers.io()).map(new ModelHandler<MerchantList>());
-//    }
-//
-//
-//    /**
-//     * 获取运营商列表
-//     *
-//     * @param pageNum    当前页数
-//     * @param status     状态，0：未启用，1：待审核，2：已签约，3：过期，4：注销
-//     * @param searchName 搜索内容
-//     */
-//    public Flowable<OperatorBean> getOperatorList(String roleCode, int pageNum, int status, String searchName) {
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        hashMap.put("pageNumber", pageNum);
-//        hashMap.put("pageSize", Page.EVERY_PAGE_COUNT);
-//        if (status != -1) {
-//            hashMap.put("status", status);
-//        }
-//        hashMap.put("name", searchName);
-//        return mApiServer.getOperatorList(Role.getPathFromRole(roleCode), hashMap)
-//                .subscribeOn(Schedulers.io()).map(new ModelHandler<OperatorBean>());
-//    }
-//
-//    /**
-//     * 获取渠道商列表
-//     *
-//     * @param pageNum    当前页数
-//     * @param status     状态，0：未启用，1：待审核，2：已签约，3：过期，4：注销
-//     * @param searchName 搜索内容
-//     */
-//    public Flowable<ChannelBean> getChannelList(String roleCode, int pageNum, int status, String searchName) {
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        hashMap.put("pageNumber", pageNum);
-//        hashMap.put("pageSize", Page.EVERY_PAGE_COUNT);
-//        if (status != -1) {
-//            hashMap.put("status", status);
-//        }
-//        hashMap.put("name", searchName);
-//        return mApiServer.getChannelList(Role.getPathFromRole(roleCode), hashMap)
-//                .subscribeOn(Schedulers.io()).map(new ModelHandler<ChannelBean>());
-//    }
-//
-//    /**
-//     * 获取业务员列表
-//     *
-//     * @param pageNum    当前页数
-//     * @param status     状态，0：未启用，1：待审核，2：已签约，3：过期，4：注销
-//     * @param searchName 搜索内容
-//     */
-//    public Flowable<SalesListBean> getSalesmanList(String roleCode, int pageNum, int status, String searchName) {
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        hashMap.put("pageNumber", pageNum);
-//        hashMap.put("pageSize", Page.EVERY_PAGE_COUNT);
-//        if (status != -1) {
-//            hashMap.put("status", status);
-//        }
-//        hashMap.put("name", searchName);
-//        return mApiServer.getSalesmanList(Role.getPathFromRole(roleCode), hashMap)
-//                .subscribeOn(Schedulers.io()).map(new ModelHandler<SalesListBean>());
-//    }
+
 }

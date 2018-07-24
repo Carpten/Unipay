@@ -17,7 +17,7 @@
                 android:layout_height="422dp"
                 android:layout_marginLeft="112dp"
                 android:layout_marginTop="169dp"
-                android:src="@drawable/icon_login"
+                android:src="@drawable/bmp_login"
                 tools:ignore="ContentDescription" />
 
 
@@ -42,7 +42,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/icon_login_alipay" />
+                        android:src="@drawable/bmp_login_alipay" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -51,7 +51,14 @@
                         android:background="@drawable/bg_stroke_rectangle_3dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="1dp">
+                        android:paddingRight="1dp">
+
+                        <ImageView
+                            android:id="@+id/iv_indicator_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/icon_rectangle_w3dp"
+                            android:visibility="invisible" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -63,7 +70,9 @@
                             android:id="@+id/et_username"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_marginBottom="1dp"
                             android:layout_marginLeft="12dp"
+                            android:layout_marginTop="1dp"
                             android:layout_weight="1"
                             android:background="@color/white"
                             android:hint="@string/login_username"
@@ -89,7 +98,14 @@
                         android:background="@drawable/bg_stroke_rectangle_3dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="1dp">
+                        android:paddingRight="1dp">
+
+                        <ImageView
+                            android:id="@+id/iv_indicator_password"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/icon_rectangle_w3dp"
+                            android:visibility="invisible" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -101,7 +117,9 @@
                             android:id="@+id/et_password"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_marginBottom="1dp"
                             android:layout_marginLeft="12dp"
+                            android:layout_marginTop="1dp"
                             android:layout_weight="1"
                             android:background="@color/white"
                             android:hint="@string/login_password"
@@ -138,7 +156,7 @@
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:background="@drawable/bg_button_theme_3dp"
+                        android:background="@drawable/bg_solid_rectangle_3dp"
                         android:text="@string/login_login"
                         android:textColor="@color/white"
                         android:textSize="@dimen/textSize" />
@@ -154,14 +172,14 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/icon_login_alipay"
+                            android:src="@drawable/bmp_login_alipay"
                             tools:ignore="ContentDescription" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="56dp"
-                            android:src="@drawable/icon_login_wechatpay"
+                            android:src="@drawable/bmp_login_wechatpay"
                             tools:ignore="ContentDescription" />
                     </LinearLayout>
                 </LinearLayout>

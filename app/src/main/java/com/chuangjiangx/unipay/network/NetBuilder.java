@@ -25,6 +25,10 @@ public class NetBuilder<T> {
         this.mCompositeDisposable = compositeDisposable;
     }
 
+    public CompositeDisposable getCompositeDisposable() {
+        return mCompositeDisposable;
+    }
+
 
     public <T> Disposable request(Flowable<T> flowable, final Consumer<T> consumer, final NetCallback... netCallbacks) {
         for (NetCallback netCallback : netCallbacks) {

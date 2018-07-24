@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Unipay</string>
-    <string name="action_settings">Settings</string>
 
     <!-- 登录-->
     <string name="login">登录</string>
@@ -13,5 +12,8 @@
     <string name="accessibility_description">开启该服务，即可使用键盘唤起收银功能</string>
 
     <string name="network_fail">网络连接失败，请检查网络后重试</string>
+
+    <!--等待付款页-->
+    <string name="main_welcome">欢迎光临</string>
 
 </resources>

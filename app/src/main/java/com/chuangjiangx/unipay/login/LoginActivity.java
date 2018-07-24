@@ -10,9 +10,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import com.chuangjiangx.unipay.MainActivity;
 import com.chuangjiangx.unipay.R;
 import com.chuangjiangx.unipay.databinding.ActivityLoginBinding;
+import com.chuangjiangx.unipay.main.MainActivity;
+import com.chuangjiangx.unipay.model.login.LoginBean;
 import com.chuangjiangx.unipay.utils.MeasureUtils;
 import com.chuangjiangx.unipay.view.activity.BaseActivity;
 import com.chuangjiangx.unipay.view.click.ClickCallback;
@@ -23,7 +24,7 @@ import com.chuangjiangx.unipay.view.toast.ToastCallback;
 import io.reactivex.functions.Consumer;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener
-        , ViewTreeObserver.OnGlobalLayoutListener {
+        , ViewTreeObserver.OnGlobalLayoutListener, View.OnFocusChangeListener {
 
     private LoginViewModel mLoginViewModel = new LoginViewModel(mNetBuilder);
 
@@ -33,11 +34,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBind = DataBindingUtil.setContentView(LoginActivity.this, R.layout.activity_login);
+        mBind.etUsername.setText(mLoginViewModel.getUserName());
+        mBind.etPassword.setText(mLoginViewModel.getPassword());
+        mBind.cbRememberPassword.setChecked(mLoginViewModel.getIsChecked());
         mBind.ivUsernameDelete.setOnClickListener(this);
         mBind.ivPasswordDelete.setOnClickListener(this);
         mBind.btnLogin.setOnClickListener(this);
         mBind.etUsername.addTextChangedListener(mTextWatcher);
         mBind.etPassword.addTextChangedListener(mTextWatcher);
+        mBind.etUsername.setOnFocusChangeListener(this);
+        mBind.etPassword.setOnFocusChangeListener(this);
         //初始化登录按钮enable值
         mTextWatcher.afterTextChanged(null);
         mBind.scrollview.getViewTreeObserver().addOnGlobalLayoutListener(this);
@@ -80,13 +86,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                 && !TextUtils.isEmpty(mBind.etPassword.getText())) {//点击登录按钮，登录
             final String username = mBind.etUsername.getText().toString();
             final String password = mBind.etPassword.getText().toString();
-            mLoginViewModel.login(new Consumer<String>() {
-                @Override
-                public void accept(String s) throws Exception {
-                    mLoginViewModel.saveAccount(username, password, s, mBind.cbRememberPassword.isChecked());
-                    startMainActivity();
-                }
-            }, username, password, new EditCallback(getWindow().getDecorView()), new ToastCallback(), new ClickCallback(mBind.btnLogin, this));
+            mLoginViewModel.login(new Consumer<LoginBean>() {
+                                      @Override
+                                      public void accept(LoginBean loginBean) throws Exception {
+                                          mLoginViewModel.saveAccount(username, password, mBind.cbRememberPassword.isChecked(), loginBean);
+                                          startMainActivity();
+                                      }
+                                  }, username, password, new EditCallback(getWindow().getDecorView())
+                    , new ToastCallback(), new ClickCallback(mBind.btnLogin, this));
         } else if (view.getId() == R.id.iv_username_delete) {//点击清除图标，清除账号
             mBind.etUsername.setText(null);
         } else if (view.getId() == R.id.iv_password_delete) {//点击清除图标，清除密码
@@ -110,5 +117,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
         context.startActivity(new Intent(context, LoginActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION
                         | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+        if (view.getId() == R.id.et_username) {
+            mBind.ivIndicatorUsername.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
+        } else if (view.getId() == R.id.et_password) {
+            mBind.ivIndicatorPassword.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
+        }
+
     }
 }

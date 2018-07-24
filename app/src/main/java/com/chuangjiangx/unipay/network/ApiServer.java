@@ -1,7 +1,9 @@
 package com.chuangjiangx.unipay.network;
 
 
+import com.chuangjiangx.unipay.model.login.MyinfoBean;
 import com.chuangjiangx.unipay.model.network.CommonBean;
+import com.chuangjiangx.unipay.model.network.ResponseBean;
 
 import java.util.Map;
 
@@ -20,13 +22,15 @@ interface ApiServer {
     @FormUrlEncoded
     @POST("/main/app/login")
     Flowable<CommonBean<String>> login(@FieldMap Map<String, Object> body);
-//
-//    @FormUrlEncoded
-//    @POST("/logout")
-//    Flowable<ResponseBean> logout(@FieldMap Map<String, Object> body);
-//
-//    @POST("/user/info")
-//    Flowable<CommonBean<UserInfo>> getUserInfo();
+
+
+    @FormUrlEncoded
+    @POST("/main/logout")
+    Flowable<ResponseBean> logout(@FieldMap Map<String, Object> body);
+
+    //
+    @POST("/main/app/search-my-details")
+    Flowable<CommonBean<MyinfoBean>> getUserInfo();
 //
 //    @POST("/app/component-list")
 //    Flowable<CommonBean<List<PermissionCode>>> getComponentList();
