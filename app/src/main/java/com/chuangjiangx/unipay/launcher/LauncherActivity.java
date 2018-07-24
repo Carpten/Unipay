@@ -26,11 +26,11 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!AccessibilityUtils.isAccessibilitySettingsOn(LauncherActivity.this) && mMaterialDialog == null) {
-            showAccessibilityDialog();
-        } else {
+//        if (!AccessibilityUtils.isAccessibilitySettingsOn(LauncherActivity.this) && mMaterialDialog == null) {
+//            showAccessibilityDialog();
+//        } else {
             startLogin();
-        }
+//        }
     }
 
     private void showAccessibilityDialog() {

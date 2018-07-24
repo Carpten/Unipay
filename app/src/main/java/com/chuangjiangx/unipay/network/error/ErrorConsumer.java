@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.chuangjiangx.unipay.R;
 import com.chuangjiangx.unipay.login.LoginActivity;
 import com.chuangjiangx.unipay.network.callback.ErrorNetCallback;
 import com.google.gson.stream.MalformedJsonException;
@@ -35,7 +36,8 @@ public class ErrorConsumer implements Consumer<Throwable> {
                 Log.e(ErrorConsumer.class.getSimpleName(), throwable.getMessage());
             if (throwable instanceof UnknownHostException || throwable instanceof ConnectException
                     || throwable instanceof SocketTimeoutException) {
-                HttpException httpException = new HttpException(HttpException.NET_ERROR_CODE, "");
+                HttpException httpException = new HttpException(HttpException.NET_ERROR_CODE
+                        , mContext.getString(R.string.network_fail));
                 for (ErrorNetCallback errorNetCallback : mErrorNetCallbacks) {
                     errorNetCallback.onRequestFail(httpException);
                 }
