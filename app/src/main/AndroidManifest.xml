@@ -4,6 +4,7 @@
     package="com.chuangjiangx.unipay">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".application.MyApp"
@@ -14,29 +15,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".launcher.LauncherActivity">
+        <activity
+            android:name=".launcher.LauncherActivity"
+            android:theme="@style/AppTheme.NoActionBar.White">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar.White"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
         <activity
             android:name=".main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar.White"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:theme="@style/AppTheme.NoActionBar.White" />
 
         <service
             android:name=".services.MonitorService"
+            android:label="@string/app_name"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
-
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
@@ -45,6 +44,17 @@
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".services.BootReceiver">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".pay.C2BActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar.White" />
     </application>
 
 </manifest>

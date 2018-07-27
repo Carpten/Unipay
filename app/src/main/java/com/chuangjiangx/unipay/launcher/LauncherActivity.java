@@ -2,19 +2,17 @@ package com.chuangjiangx.unipay.launcher;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.chuangjiangx.unipay.main.MainActivity;
 import com.chuangjiangx.unipay.R;
 import com.chuangjiangx.unipay.config.Config;
 import com.chuangjiangx.unipay.login.LoginActivity;
+import com.chuangjiangx.unipay.main.MainActivity;
+import com.chuangjiangx.unipay.utils.AccessibilityUtils;
+import com.chuangjiangx.unipay.view.dialog.DialogBuild;
 
 public class LauncherActivity extends AppCompatActivity {
-
-    private MaterialDialog mMaterialDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,30 +23,30 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        if (!AccessibilityUtils.isAccessibilitySettingsOn(LauncherActivity.this) && mMaterialDialog == null) {
-//            showAccessibilityDialog();
-//        } else {
-        if (Config.initConfig()) {
-            startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+        if (!AccessibilityUtils.isAccessibilitySettingsOn(LauncherActivity.this)) {
+            showAccessibilityDialog();
         } else {
-            startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
+            if (Config.initConfig()) {
+                startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+            } else {
+                startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
+            }
+            finish();
         }
-        finish();
-//        }
     }
 
     private void showAccessibilityDialog() {
-        mMaterialDialog = new MaterialDialog.Builder(LauncherActivity.this)
-                .cancelable(false)
-                .content("请设置")
-                .positiveText("马上设置")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        new DialogBuild(LauncherActivity.this)
+                .setCloseOn(false)
+                .setTitle(getString(R.string.accessibility_dialog_title))
+                .setContentText(getString(R.string.accessibility_dialog_content))
+                .setPositiveText(getString(R.string.accessibility_dialog_positive))
+                .onPositive(new View.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(View view) {
                         setupAccessibility();
                     }
-                })
-                .show();
+                }).show();
     }
 
 

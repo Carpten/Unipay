@@ -38,7 +38,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="21dp"
-                    android:text="呷浦呷浦滨江路店"
                     android:textColor="@color/textBlack"
                     android:textSize="28dp"
                     android:textStyle="bold" />

@@ -60,10 +60,17 @@ public class RetrofitClient {
                     @Override
                     public Response intercept(@NonNull Chain chain) throws IOException {
                         Request original = chain.request();
-                        Request request = original.newBuilder()
-                                .header("token", Config.sToken == null ? "" : Config.sToken)
-                                .build();
-                        return chain.proceed(request);
+                        String url = original.url().toString();
+                        if (url != null && !url.contains("/main/app/login")) {
+                            Request request = original.newBuilder()
+                                    .header("token", Config.sToken == null ? "" : Config.sToken)
+                                    .build();
+                            return chain.proceed(request);
+                        } else {
+                            Request request = original.newBuilder().build();
+                            return chain.proceed(request);
+                        }
+
                     }
                 })
                 .connectTimeout(TIME_OUT, TimeUnit.MILLISECONDS)//设置连接超时时间
@@ -95,7 +102,6 @@ public class RetrofitClient {
                         .add("macCode", "1")
                         .add("cid", "1")
                         .add("deviceType", "1")
-
                         .build();
                 Request tokenRequest = new Request.Builder()
                         .url(InternetConfig.BASE_URL + "/main/app/login")
@@ -183,8 +189,8 @@ public class RetrofitClient {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("username", username);
         hashMap.put("password", password);
-        hashMap.put("macCode", "1");
-        hashMap.put("cid", "1");
+        hashMap.put("macCode", "9f3847c1-d84d-40ec-b3f9-38212647741a");
+        hashMap.put("cid", "16b7ab463db997d15a62527e8708f49e");
         hashMap.put(" deviceType", "1");
         return mApiServer.login(hashMap).subscribeOn(Schedulers.io())
                 .map(new ModelHandler<String>());

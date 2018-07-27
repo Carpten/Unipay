@@ -74,12 +74,15 @@ class LoginViewModel extends BaseViewModel {
         String storeName = loginBean.getMyinfoBean().getMainSearchMyDetailsDto().getStoreName();
         String merchantName = loginBean.getMyinfoBean().getMainSearchMyDetailsDto().getMerchantName();
         Config.sStoreName = !TextUtils.isEmpty(storeName) ? storeName : merchantName;
+        Config.sNickName = loginBean.getMyinfoBean().getMainSearchMyDetailsDto().getRealname();
         Preferences.edit()
                 .putString(Preferences.KEY_USERNAME, username)
                 .putString(Preferences.KEY_PASSWORD, password)
                 .putBoolean(Preferences.KEY_REMEMBER_PASSWORD, ischecked)
                 .putString(Preferences.KEY_TOKEN, loginBean.getToken())
                 .putString(Preferences.KEY_STORENAME, Config.sStoreName)
+                .putString(Preferences.KEY_NICKNAME, Config.sNickName)
+
                 .apply();
     }
 }
