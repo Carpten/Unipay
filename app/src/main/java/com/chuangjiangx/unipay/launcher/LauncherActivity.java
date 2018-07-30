@@ -1,5 +1,6 @@
 package com.chuangjiangx.unipay.launcher;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +15,12 @@ import com.chuangjiangx.unipay.view.dialog.DialogBuild;
 
 public class LauncherActivity extends AppCompatActivity {
 
+    private AlertDialog mDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launcher);
+//        setContentView(R.layout.activity_launcher);
     }
 
     @Override
@@ -36,17 +39,19 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void showAccessibilityDialog() {
-        new DialogBuild(LauncherActivity.this)
-                .setCloseOn(false)
-                .setTitle(getString(R.string.accessibility_dialog_title))
-                .setContentText(getString(R.string.accessibility_dialog_content))
-                .setPositiveText(getString(R.string.accessibility_dialog_positive))
-                .onPositive(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setupAccessibility();
-                    }
-                }).show();
+        if (mDialog == null || !mDialog.isShowing()) {
+            mDialog = new DialogBuild(LauncherActivity.this)
+                    .setCloseOn(false)
+                    .setTitle(getString(R.string.accessibility_dialog_title))
+                    .setContentText(getString(R.string.accessibility_dialog_content))
+                    .setPositiveText(getString(R.string.accessibility_dialog_positive))
+                    .onPositive(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            setupAccessibility();
+                        }
+                    }).show();
+        }
     }
 
 

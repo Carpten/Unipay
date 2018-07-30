@@ -16,9 +16,13 @@ import io.reactivex.functions.Consumer;
  * Time:2017/11/27 16:24
  */
 
-public class NetBuilder<T> {
+public class NetBuilder {
     private CompositeDisposable mCompositeDisposable;
     private Context mContext;
+
+    public NetBuilder(Context mContext) {
+        this.mContext = mContext;
+    }
 
     public NetBuilder(Context context, CompositeDisposable compositeDisposable) {
         this.mContext = context;

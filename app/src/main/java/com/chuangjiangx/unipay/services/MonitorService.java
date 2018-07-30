@@ -1,22 +1,13 @@
 package com.chuangjiangx.unipay.services;
 
 import android.accessibilityservice.AccessibilityService;
-import android.app.Service;
 import android.content.Intent;
-import android.os.IBinder;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 
-import com.chuangjiangx.unipay.launcher.LauncherActivity;
+import com.chuangjiangx.unipay.wakeup.WakeupActivity;
 
 public class MonitorService extends AccessibilityService {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.i("test", "onCreate");
-    }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
@@ -30,11 +21,13 @@ public class MonitorService extends AccessibilityService {
 
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            startActivity(new Intent(getApplicationContext(), LauncherActivity.class)
+        if (event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_DIVIDE) {
+            startActivity(new Intent(getApplicationContext(), WakeupActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            return true;
+        } else {
+            return super.onKeyEvent(event);
         }
-        super.onKeyEvent(event);
-        return true;
     }
 }

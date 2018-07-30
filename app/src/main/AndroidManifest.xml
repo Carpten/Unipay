@@ -30,6 +30,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".main.MainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar.White" />
 
         <service
@@ -52,8 +53,12 @@
         </receiver>
 
         <activity
-            android:name=".pay.C2BActivity"
-            android:launchMode="singleTask"
+            android:name=".pay.c2b.C2BActivity"
+            android:theme="@style/AppTheme.NoActionBar.White" />
+        <activity android:name=".wakeup.WakeupActivity" />
+
+        <activity
+            android:name=".pay.success.PaySuccessActivity"
             android:theme="@style/AppTheme.NoActionBar.White" />
     </application>
 

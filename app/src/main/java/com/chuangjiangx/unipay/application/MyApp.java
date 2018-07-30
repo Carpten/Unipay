@@ -3,6 +3,7 @@ package com.chuangjiangx.unipay.application;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.chuangjiangx.unipay.services.MonitorService;
 

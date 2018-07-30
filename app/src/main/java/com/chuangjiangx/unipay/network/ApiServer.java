@@ -1,6 +1,7 @@
 package com.chuangjiangx.unipay.network;
 
 
+import com.chuangjiangx.unipay.model.c2b.UrlBean;
 import com.chuangjiangx.unipay.model.login.MyinfoBean;
 import com.chuangjiangx.unipay.model.network.CommonBean;
 import com.chuangjiangx.unipay.model.network.ResponseBean;
@@ -31,6 +32,10 @@ interface ApiServer {
     //
     @POST("/main/app/search-my-details")
     Flowable<CommonBean<MyinfoBean>> getUserInfo();
+
+    @FormUrlEncoded
+    @POST("/pay/create-pay-qrcode")
+    Flowable<CommonBean<UrlBean>> createPayCode(@FieldMap Map<String, Object> body);
 //
 //    @POST("/app/component-list")
 //    Flowable<CommonBean<List<PermissionCode>>> getComponentList();

@@ -22,4 +22,11 @@
     <string name="main_welcome">欢迎光临</string>
     <string name="main_logout" formatted="false">"账 号：%s\n姓 名：%s"</string>
 
+    <!--C2B-->
+    <string name="c2b_need_pay">需支付：</string>
+    <string name="c2b_scan">请打开支付宝/微信，扫码支付</string>
+
+    <!--pay-->
+    <string name="pay_yuan">元</string>
+
 </resources>

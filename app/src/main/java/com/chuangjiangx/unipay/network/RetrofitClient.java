@@ -3,6 +3,7 @@ package com.chuangjiangx.unipay.network;
 import android.support.annotation.NonNull;
 
 import com.chuangjiangx.unipay.config.Config;
+import com.chuangjiangx.unipay.model.c2b.UrlBean;
 import com.chuangjiangx.unipay.model.login.MyinfoBean;
 import com.chuangjiangx.unipay.model.network.CommonBean;
 import com.chuangjiangx.unipay.model.network.ResponseBean;
@@ -232,5 +233,18 @@ public class RetrofitClient {
 //            }
 //        }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.io());
 //    }
+
+    /**
+     * c2b获取支付二维码地址
+     */
+    public Flowable<UrlBean> createPayCode(double totalFee, String id) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("totalFee", totalFee);
+        hashMap.put("channel", "2");
+        hashMap.put("id", id);
+        return mApiServer.createPayCode(hashMap).subscribeOn(Schedulers.io())
+                .map(new ModelHandler<UrlBean>());
+    }
+
 
 }
