@@ -1,6 +1,5 @@
 package com.chuangjiangx.unipay.pay.c2b;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -10,11 +9,10 @@ import com.chuangjiangx.unipay.model.network.ResponseBean;
 import com.chuangjiangx.unipay.network.InternetConfig;
 import com.chuangjiangx.unipay.network.NetBuilder;
 import com.chuangjiangx.unipay.network.RetrofitClient;
-import com.chuangjiangx.unipay.pay.success.PaySuccessActivity;
+import com.chuangjiangx.unipay.pay.success.PayResultActivity;
 import com.chuangjiangx.unipay.utils.BarUtils;
 import com.chuangjiangx.unipay.utils.MeasureUtils;
 import com.chuangjiangx.unipay.view.activity.BaseViewModel;
-import com.chuangjiangx.unipay.wakeup.WakeupActivity;
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 
@@ -103,7 +101,7 @@ class C2BViewModel extends BaseViewModel {
             try {
                 ResponseBean responseBean = new Gson().fromJson(message, ResponseBean.class);
                 if (responseBean.isSuccess()) {
-                    PaySuccessActivity.startActivithy(mC2BActivity, amount);
+                    PayResultActivity.startActivithy(mC2BActivity, amount, true, "");
                     mC2BActivity.finish();
                 }
                 i = 0;

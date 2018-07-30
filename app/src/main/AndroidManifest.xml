@@ -58,7 +58,7 @@
         <activity android:name=".wakeup.WakeupActivity" />
 
         <activity
-            android:name=".pay.success.PaySuccessActivity"
+            android:name=".pay.success.PayResultActivity"
             android:theme="@style/AppTheme.NoActionBar.White" />
     </application>
 

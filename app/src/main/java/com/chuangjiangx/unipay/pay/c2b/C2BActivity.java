@@ -16,13 +16,15 @@ import com.chuangjiangx.unipay.view.activity.BaseActivity;
 
 public class C2BActivity extends BaseActivity {
 
+    private static final String EXTRA_AMOUNT = "EXTRA_AMOUNT";
+
     private ActivityC2bBinding mBind;
 
     private C2BViewModel mViewModel = new C2BViewModel(C2BActivity.this, mNetBuilder);
 
     public static void startC2BActivithy(Activity activity, double amount, int requestCode) {
         Intent intent = new Intent(activity, C2BActivity.class);
-        intent.putExtra(Constant.EXTRA_AMOUNT, amount);
+        intent.putExtra(EXTRA_AMOUNT, amount);
         activity.startActivityForResult(intent, requestCode);
     }
 
@@ -30,7 +32,7 @@ public class C2BActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBind = DataBindingUtil.setContentView(C2BActivity.this, R.layout.activity_c2b);
-        double amount = getIntent().getDoubleExtra(Constant.EXTRA_AMOUNT, 0d);
+        double amount = getIntent().getDoubleExtra(EXTRA_AMOUNT, 0d);
         mBind.tvAmount.setText(String.valueOf(amount));
         mViewModel.initSocket(amount);
     }

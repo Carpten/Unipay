@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.chuangjiangx.unipay.launcher.LauncherActivity;
 import com.chuangjiangx.unipay.main.MainActivity;
-import com.chuangjiangx.unipay.pay.success.PaySuccessActivity;
 
 public class WakeupActivity extends AppCompatActivity {
 
