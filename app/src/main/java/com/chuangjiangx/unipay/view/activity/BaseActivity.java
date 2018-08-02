@@ -30,7 +30,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        mCompositeDisposable.dispose();
+        if(!mCompositeDisposable.isDisposed()) {
+            try {
+                mCompositeDisposable.dispose();
+            }catch (Exception ignored){}
+        }
         super.onDestroy();
     }
 }

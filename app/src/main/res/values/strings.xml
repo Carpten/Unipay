@@ -29,4 +29,9 @@
     <!--pay-->
     <string name="pay_yuan">元</string>
 
+    <!--speak-->
+    <string name="speak_input_amount">请输入金额</string>
+    <string name="speak_amount" formatted="false">请支付 %s 元</string>
+    <string name="speak_success" formatted="false">%s收款%s元</string>
+
 </resources>

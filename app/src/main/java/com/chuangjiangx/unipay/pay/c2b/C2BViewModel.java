@@ -3,17 +3,21 @@ package com.chuangjiangx.unipay.pay.c2b;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.chuangjiangx.unipay.R;
 import com.chuangjiangx.unipay.application.MyApp;
+import com.chuangjiangx.unipay.model.c2b.SuccessBean;
 import com.chuangjiangx.unipay.model.c2b.UrlBean;
-import com.chuangjiangx.unipay.model.network.ResponseBean;
+import com.chuangjiangx.unipay.model.network.CommonBean;
 import com.chuangjiangx.unipay.network.InternetConfig;
 import com.chuangjiangx.unipay.network.NetBuilder;
 import com.chuangjiangx.unipay.network.RetrofitClient;
-import com.chuangjiangx.unipay.pay.success.PayResultActivity;
+import com.chuangjiangx.unipay.pay.result.PayResultActivity;
+import com.chuangjiangx.unipay.services.tts.SpeakService;
 import com.chuangjiangx.unipay.utils.BarUtils;
 import com.chuangjiangx.unipay.utils.MeasureUtils;
 import com.chuangjiangx.unipay.view.activity.BaseViewModel;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.zxing.BarcodeFormat;
 
 import org.java_websocket.client.WebSocketClient;
@@ -99,9 +103,12 @@ class C2BViewModel extends BaseViewModel {
                     });
         } else {
             try {
-                ResponseBean responseBean = new Gson().fromJson(message, ResponseBean.class);
+                CommonBean<SuccessBean> responseBean = new Gson().fromJson(message, new TypeToken<CommonBean<SuccessBean>>() {
+                }.getType());
+
                 if (responseBean.isSuccess()) {
-                    PayResultActivity.startActivithy(mC2BActivity, amount, true, "");
+                    PayResultActivity.startActivithy(mC2BActivity, amount, responseBean.getData().getOrderType());
+
                     mC2BActivity.finish();
                 }
                 i = 0;
@@ -110,5 +117,10 @@ class C2BViewModel extends BaseViewModel {
             }
         }
         i++;
+    }
+
+
+    void speak(String amout) {
+        SpeakService.stopAndSpeak(mC2BActivity, mC2BActivity.getString(R.string.speak_amount, amout));
     }
 }

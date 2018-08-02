@@ -1,11 +1,14 @@
 package com.chuangjiangx.unipay.main;
 
 import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
+import com.chuangjiangx.unipay.R;
 import com.chuangjiangx.unipay.network.NetBuilder;
 import com.chuangjiangx.unipay.pay.c2b.C2BActivity;
+import com.chuangjiangx.unipay.services.tts.SpeakService;
 import com.chuangjiangx.unipay.view.activity.BaseViewModel;
 
 class MainViewModel extends BaseViewModel {
@@ -22,7 +25,11 @@ class MainViewModel extends BaseViewModel {
                 && keyCode <= KeyEvent.KEYCODE_NUMPAD_9) {
             int index = mMoney.lastIndexOf(".");
             if (index == -1 || index >= mMoney.length() - 2) {
-                mMoney.append((keyCode - KeyEvent.KEYCODE_NUMPAD_0));
+                if (!(keyCode == KeyEvent.KEYCODE_NUMPAD_0
+                        && index == mMoney.length() - 2
+                        && Double.valueOf(mMoney.toString()) == 0)) {
+                    mMoney.append((keyCode - KeyEvent.KEYCODE_NUMPAD_0));
+                }
             }
         } else if (keyCode == KeyEvent.KEYCODE_NUMPAD_DOT) {
             if (mMoney.lastIndexOf(".") == -1) {
@@ -46,6 +53,10 @@ class MainViewModel extends BaseViewModel {
         mMoney = new StringBuilder();
     }
 
+    void speakInputAmount(Context context) {
+        speak(context, context.getString(R.string.speak_input_amount));
+    }
+
 
     private void confirmMoney(Activity activity) {
         if (!TextUtils.isEmpty(mMoney.toString()) && !".".equals(mMoney.toString())) {
@@ -54,6 +65,10 @@ class MainViewModel extends BaseViewModel {
                 C2BActivity.startC2BActivithy(activity, amount, 1);
             }
         }
+    }
+
+    private void speak(Context context, String text) {
+        SpeakService.stopAndSpeak(context, text);
     }
 
     private void finish(Activity activity) {

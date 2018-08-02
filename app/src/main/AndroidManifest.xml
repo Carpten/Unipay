@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.chuangjiangx.unipay">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
@@ -56,10 +57,12 @@
             android:name=".pay.c2b.C2BActivity"
             android:theme="@style/AppTheme.NoActionBar.White" />
         <activity android:name=".wakeup.WakeupActivity" />
-
         <activity
-            android:name=".pay.success.PayResultActivity"
+            android:name=".pay.result.PayResultActivity"
             android:theme="@style/AppTheme.NoActionBar.White" />
+
+        <service android:name=".services.tts.SpeakService" />
+
     </application>
 
 </manifest>

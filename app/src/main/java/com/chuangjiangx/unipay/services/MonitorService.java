@@ -2,6 +2,7 @@ package com.chuangjiangx.unipay.services;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Intent;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 
@@ -21,6 +22,7 @@ public class MonitorService extends AccessibilityService {
 
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
+        Log.i("test", "event:" + event);
         if (event.getAction() == KeyEvent.ACTION_DOWN
                 && event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_DIVIDE) {
             startActivity(new Intent(getApplicationContext(), WakeupActivity.class)

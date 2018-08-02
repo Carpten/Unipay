@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 
 import com.chuangjiangx.unipay.R;
-import com.chuangjiangx.unipay.constant.Constant;
 import com.chuangjiangx.unipay.databinding.ActivityC2bBinding;
-import com.chuangjiangx.unipay.utils.MeasureUtils;
+import com.chuangjiangx.unipay.utils.ConvertUtils;
 import com.chuangjiangx.unipay.view.activity.BaseActivity;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Flowable;
+import io.reactivex.functions.Consumer;
 
 public class C2BActivity extends BaseActivity {
 
@@ -33,8 +36,9 @@ public class C2BActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mBind = DataBindingUtil.setContentView(C2BActivity.this, R.layout.activity_c2b);
         double amount = getIntent().getDoubleExtra(EXTRA_AMOUNT, 0d);
-        mBind.tvAmount.setText(String.valueOf(amount));
+        mBind.tvAmount.setText(ConvertUtils.amount2String(amount));
         mViewModel.initSocket(amount);
+        mViewModel.speak(ConvertUtils.amount2SpeakString(amount));
     }
 
 
