@@ -12,11 +12,6 @@ import com.chuangjiangx.unipay.databinding.ActivityC2bBinding;
 import com.chuangjiangx.unipay.utils.ConvertUtils;
 import com.chuangjiangx.unipay.view.activity.BaseActivity;
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
-
 public class C2BActivity extends BaseActivity {
 
     private static final String EXTRA_AMOUNT = "EXTRA_AMOUNT";
@@ -45,6 +40,11 @@ public class C2BActivity extends BaseActivity {
     public void initQrView(Bitmap bitmap) {
         mBind.ivQrcode.setImageBitmap(bitmap);
         mBind.ivQrcode.animate().alpha(1).scaleX(1f).scaleY(1f).setDuration(200).start();
+    }
+
+
+    public void netError() {
+        mBind.llNetError.animate().alpha(1).scaleX(1f).scaleY(1f).setDuration(200).start();
     }
 
     @Override

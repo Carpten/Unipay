@@ -22,6 +22,29 @@
                 android:background="@drawable/bg_c2b_qrcode"
                 tools:ignore="ContentDescription">
 
+                <LinearLayout
+                    android:id="@+id/ll_net_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:alpha="0"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_net_error" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/network_fail_short"
+                        android:textColor="@color/subTextBlack"
+                        android:textSize="@dimen/smallTextSize" />
+                </LinearLayout>
+
                 <ImageView
                     android:id="@+id/iv_qrcode"
                     android:layout_width="240dp"
@@ -58,7 +81,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#f5222d"
-                        android:textSize="32dp" />
+                        android:textSize="56dp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -88,14 +112,14 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/icon_alipay"
+                        android:src="@drawable/icon_wechatpay"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="56dp"
-                        android:src="@drawable/icon_wechatpay"
+                        android:src="@drawable/icon_alipay"
                         tools:ignore="ContentDescription" />
                 </LinearLayout>
 

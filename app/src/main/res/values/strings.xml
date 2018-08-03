@@ -13,18 +13,22 @@
     <!--Accessibility服务-->
     <string name="accessibility_description">开启该服务，即可使用键盘唤起收银功能</string>
     <string name="accessibility_dialog_title">外联小键盘访问系统权限异常</string>
-    <string name="accessibility_dialog_content">"请前往【无障碍】-服务-【Unipay】开启服务"</string>
+    <string name="accessibility_dialog_content">"请前往【无障碍】-服务-【UniPAY】开启服务"</string>
     <string name="accessibility_dialog_positive">前往设置</string>
 
+
+    <!--NET-->
     <string name="network_fail">网络连接失败，请检查网络后重试</string>
+    <string name="network_fail_short">网络连接失败</string>
 
     <!--等待付款页-->
     <string name="main_welcome">欢迎光临</string>
+    <string name="main_company">※ 杭州创匠信息科技有限公司提供技术支持</string>
     <string name="main_logout" formatted="false">"账 号：%s\n姓 名：%s"</string>
 
     <!--C2B-->
     <string name="c2b_need_pay">需支付：</string>
-    <string name="c2b_scan">请打开支付宝/微信，扫码支付</string>
+    <string name="c2b_scan">请打开微信/支付宝，扫码支付</string>
 
     <!--pay-->
     <string name="pay_yuan">元</string>

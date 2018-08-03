@@ -8,7 +8,7 @@
 
 
     <color name="textBlack">#333333</color>
-    <color name="subTextBlack">#7A7A7A</color>
+    <color name="subTextBlack">#666666</color>
     <color name="lightTextBlack">#BFBFBF</color>
 
 </resources>

@@ -11,6 +11,8 @@ import com.chuangjiangx.unipay.model.network.CommonBean;
 import com.chuangjiangx.unipay.network.InternetConfig;
 import com.chuangjiangx.unipay.network.NetBuilder;
 import com.chuangjiangx.unipay.network.RetrofitClient;
+import com.chuangjiangx.unipay.network.callback.SimpleNetCallback;
+import com.chuangjiangx.unipay.network.error.HttpException;
 import com.chuangjiangx.unipay.pay.result.PayResultActivity;
 import com.chuangjiangx.unipay.services.tts.SpeakService;
 import com.chuangjiangx.unipay.utils.BarUtils;
@@ -25,7 +27,9 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
@@ -64,6 +68,7 @@ class C2BViewModel extends BaseViewModel {
 
                 @Override
                 public void onError(Exception e) {
+                    doError();
                 }
             };
             mWebSocketClient.connect();
@@ -100,6 +105,13 @@ class C2BViewModel extends BaseViewModel {
                         public void accept(Bitmap bitmap) throws Exception {
                             mC2BActivity.initQrView(bitmap);
                         }
+                    }, new SimpleNetCallback() {
+                        @Override
+                        public void onRequestFail(HttpException e) {
+                            if (e.isNetError()) {
+                                doError();
+                            }
+                        }
                     });
         } else {
             try {
@@ -117,6 +129,18 @@ class C2BViewModel extends BaseViewModel {
             }
         }
         i++;
+    }
+
+    private void doError() {
+        mNetBuilder.getCompositeDisposable().add(
+                Flowable.empty()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doFinally(new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                mC2BActivity.netError();
+                            }
+                        }).subscribe());
     }
 
 
