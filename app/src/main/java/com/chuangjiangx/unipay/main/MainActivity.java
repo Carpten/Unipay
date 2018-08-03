@@ -1,5 +1,7 @@
 package com.chuangjiangx.unipay.main;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import com.chuangjiangx.unipay.utils.ConvertUtils;
 import com.chuangjiangx.unipay.view.activity.BaseActivity;
 import com.chuangjiangx.unipay.view.dialog.DialogBuild;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
@@ -39,6 +42,7 @@ public class MainActivity extends BaseActivity {
         mCompositeDisposable.add(RxBus.getSuccessClose().subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
+                MainActivity.sStarting = false;
                 finish();
             }
         }, new Consumer<Throwable>() {
@@ -70,8 +74,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         sStarting = false;
+        super.onDestroy();
     }
 
     private Disposable timerSubscribe;
@@ -90,6 +94,7 @@ public class MainActivity extends BaseActivity {
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
+                        MainActivity.sStarting = false;
                         finish();
                     }
                 });

@@ -1,5 +1,7 @@
 package com.chuangjiangx.unipay.wakeup;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +9,8 @@ import android.util.Log;
 
 import com.chuangjiangx.unipay.launcher.LauncherActivity;
 import com.chuangjiangx.unipay.main.MainActivity;
+
+import java.util.List;
 
 public class WakeupActivity extends AppCompatActivity {
 
@@ -22,4 +26,6 @@ public class WakeupActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(0, 0);
     }
+
+
 }

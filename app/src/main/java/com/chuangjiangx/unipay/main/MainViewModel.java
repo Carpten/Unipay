@@ -28,7 +28,10 @@ class MainViewModel extends BaseViewModel {
                 if (!(keyCode == KeyEvent.KEYCODE_NUMPAD_0
                         && index == mMoney.length() - 2
                         && Double.valueOf(mMoney.toString()) == 0)) {
-                    mMoney.append((keyCode - KeyEvent.KEYCODE_NUMPAD_0));
+                    String overNum = mMoney.toString() + (keyCode - KeyEvent.KEYCODE_NUMPAD_0);
+                    if (Double.valueOf(overNum) <= 99999.99) {
+                        mMoney.append((keyCode - KeyEvent.KEYCODE_NUMPAD_0));
+                    }
                 }
             }
         } else if (keyCode == KeyEvent.KEYCODE_NUMPAD_DOT) {
@@ -72,6 +75,7 @@ class MainViewModel extends BaseViewModel {
     }
 
     private void finish(Activity activity) {
+        MainActivity.sStarting = false;
         activity.finish();
     }
 }
