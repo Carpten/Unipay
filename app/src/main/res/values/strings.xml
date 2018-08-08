@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UniPAY</string>
+    <string name="app_name">UNIPAY商户版</string>
 
     <!-- 登录-->
     <string name="login">登录</string>
@@ -13,7 +13,7 @@
     <!--Accessibility服务-->
     <string name="accessibility_description">开启该服务，即可使用键盘唤起收银功能</string>
     <string name="accessibility_dialog_title">外联小键盘访问系统权限异常</string>
-    <string name="accessibility_dialog_content">"请前往【无障碍】-服务-【UniPAY】开启服务"</string>
+    <string name="accessibility_dialog_content">"请前往【无障碍】-服务-【UNIPAY商户版】开启服务"</string>
     <string name="accessibility_dialog_positive">前往设置</string>
 
 

@@ -7,5 +7,5 @@ package com.chuangjiangx.unipay.network;
 public class InternetConfig {
 
 //    public static final String BASE_URL = "http://testcl.isenruan.com";
-    public static final String BASE_URL = "http://khd.chuangjiangx.com";
+    public static final String BASE_URL = "http://client.chuangjiangx.com";
 }

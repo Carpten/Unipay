@@ -47,9 +47,11 @@ public class SpeakService extends Service implements SpeechSynthesizerListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String text = intent.getStringExtra(EXTRA_TEXT);
-        boolean stop = intent.getBooleanExtra(EXTRA_STOP, false);
-        batchSpeak(text, stop);
+        if (intent != null) {
+            String text = intent.getStringExtra(EXTRA_TEXT);
+            boolean stop = intent.getBooleanExtra(EXTRA_STOP, false);
+            batchSpeak(text, stop);
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -75,10 +77,12 @@ public class SpeakService extends Service implements SpeechSynthesizerListener {
      * 播报实现
      */
     private void batchSpeak(String text, boolean stop) {
-        if (stop) {
-            mSpeechSynthesizer.stop();
+        if (mSpeechSynthesizer != null) {
+            if (stop) {
+                mSpeechSynthesizer.stop();
+            }
+            mSpeechSynthesizer.speak(text);
         }
-        mSpeechSynthesizer.speak(text);
 //        List<SpeechSynthesizeBag> bags = new ArrayList<>();
 //        bags.add(getSpeechSynthesizeBag( text));
 //        int result = this.mSpeechSynthesizer.batchSpeak(bags);
